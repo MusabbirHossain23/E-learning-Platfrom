@@ -1,0 +1,314 @@
+{% extends 'core/base.html' %}
+
+{% load static %}
+
+{% block title %}
+<title>Course</title>
+{% endblock title %}
+
+
+{% block content %}
+
+{% include 'core/navbar.html' %}
+
+
+<div class="container mt-2">
+    <p><b class="text-center bg-dark text-light">Teacher Portal</b></p>
+
+    
+    <p class="text-dark mt-2"><b>Welcome <span class="text-success">{{name | capfirst  }}</span> <br>{{email}} </b>  </p>
+
+    <p><b class="text-danger"><a href="{% url 'logoutcms' %}" class="text-danger">Logout <i class="fa-solid fa-power-off"></i></a>  </b></p>
+    <p><b class="text-danger"><a href="{% url 'home' %}" class="text-primary">My Courses <i class="fas fa-book"></i></a>  </b></p>
+
+    <hr>
+
+</div>
+
+
+<div class="container mt-2">
+
+
+   {% if course %}
+   
+
+   {% for i in course %}
+   
+   <style>
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+    }
+    
+    * {
+      box-sizing: border-box;
+    }
+    
+    /* Create a column layout with Flexbox */
+    .row {
+      display: flex;
+    }
+    
+    /* Left column (menu) */
+    .left {
+      flex: 35%;
+      padding: 15px 0;
+    }
+    
+    .left h2 {
+      padding-left: 8px;
+    }
+    
+    /* Right column (page content) */
+    .right {
+      flex: 65%;
+      padding: 15px;
+    }
+    
+    /* Style the search box */
+    #mySearch {
+      width: 100%;
+      font-size: 18px;
+      padding: 11px;
+      border: 1px solid #460606;
+    }
+    
+    /* Style the navigation menu inside the left column */
+    #myMenu {
+      list-style-type: none;
+      padding: 0;
+      margin: 0;
+    }
+    
+    #myMenu li a {
+      padding: 12px;
+      text-decoration: none;
+      color: rgb(74, 2, 2);
+      display: block
+    }
+    
+    #myMenu li a:hover {
+      background-color: #400a0a;
+    }
+    </style>
+
+    
+    <h2 class='text-center'>Course Details</h2>
+
+    <a href="{% url 'addchapter' book=i.slug %}" class="btn btn-info mt-2">Add Chapter</a>
+    
+    
+    <div class="row mt-2">
+      <div class="left" style="background-color:#0d556b;">
+        <h2 >Chapters   </h2>
+        <input type="text" id="mySearch" onkeyup="myFunction()" placeholder="Search.." title="Type in a category">
+        <ul id="myMenu">
+
+          {% if chapters %}
+          
+          {% for i in chapters %}
+          <li><a href="{% url 'openchapter' book=subjectslug chapterslug=i.slug  %}">{{i.title | capfirst }}</a></li>
+          {% endfor %}
+
+          {% else %}
+          <li><a href="#">No chapters found</a></li>
+         
+          {% endif %}
+
+         
+        </ul>
+      </div>
+      
+      <div class="right" style="background-color:#04492c;">
+       
+        {% if ch %}
+        
+        <h2>{{i.cname | capfirst }}</h2>
+
+        {% if i.cimg == 'False' %}
+            
+      
+            <img src="{% static 'cms/img/book.jpeg' %}" alt="default image" class="img-fluid" style='width:200px; height:200px; ' title="this is the default image">          
+        
+                    {% else %}
+         
+            <img src="{{ i.cimg.url }}" alt="course image" class="img-fluid" style='width:200px; height:200px; '>
+            
+      
+        
+                    {% endif %}
+        <div class="mt-2">Course Dispcription</div>
+                    {% if i.disp == '' %}
+    <p class='mt-2'><b>No Dispcription</b></p>
+    {% else %}
+    <p  class='mt-2'><b>{{i.disp | capfirst }}</b></p>
+    {% endif %}
+       
+      </div>
+{% else %}
+
+
+{% comment %} for the perticular chapters  {% endcomment %}
+
+{% comment %} ch=false   {% endcomment %}
+
+
+{% if chapterdata %}
+
+<h2 class="alert alert-danger">{{coursename | capfirst }}</h2>
+
+{% for i in chapterdata %}
+
+<em>updated : {{i.dateof}}</em>
+
+<h3 class="alert alert-info">Chapter : {{i.title | capfirst}}</h3>
+<hr>
+
+<div class="mt-2">
+  <h4>Dispcription</h4>
+  <p class="alert alert-primary"><b>{{i.disp}}</b></p>
+</div>
+
+<div class="container mt-2">
+  {% if i.chimg != 'False' %}
+  
+  <a href="{{i.chimg.url}}" target="_blank"><img src="{{ i.chimg.url }}" alt="image" class="img-fluid" style='width:200px; height:200px; '></a>
+
+  {% endif %}
+
+  {% if i.chfiles != 'False' %}
+
+  <div class="container mt-2">
+
+    <h5>Linked Files</h5>
+
+    <a href="{{i.chfiles.url }}" target="_blank">
+      
+      <iframe src="{{i.chfiles.url}}" frameborder="0"></iframe>
+      PDF<i class="fa-solid fa-file-pdf" ></i>
+    </a>
+    <br>
+    <a href="{{i.chfiles.url}}" target="_blank"><img src="{{ i.chfiles.url }}" alt="image" class="img-fluid" style='width:200px; height:200px; '></a>
+      <br>
+      <video width="320" height="240" controls class="mt-4">
+        <source src="{{i.chfiles.url}}" type="video/mp4">
+        <source src="{{i.chfiles.url}}" type="video/mkv">
+        Your browser does not support the video tag.
+      </video>
+  
+
+     
+
+  </div>
+  {% endif %}
+
+
+  {% if   contents %}
+      
+  {% for j in contents %}
+  
+  <hr class="text-success">
+
+  <div class="mt-2">
+
+    <h3 class="mt-2 alert alert-warning">{{j.title | capfirst }}</h3>
+
+  </div>
+
+  <div class="mt-2">
+    <h4>Dispcription</h4>
+    <p class="alert alert-primary"><b>{{j.dispcription}}</b></p>
+  </div>
+  
+  {% if j.chimg != 'False' %}
+  
+  <a href="{{j.chimg.url}}" target="_blank"><img src="{{ j.chimg.url }}" alt="image" class="img-fluid" style='width:200px; height:200px; '></a>
+  
+  {% endif %}
+
+
+  {% if j.chfiles != 'False' %}
+  
+
+
+  <div class="container mt-2">
+
+    <h5>Linked Files</h5>
+
+    
+    <a href="{{j.chfiles.url }}" target="_blank">
+      
+      <iframe src="{{j.chfiles.url}}" frameborder="0"></iframe>
+      <h3><i class="fa-solid fa-file-pdf" ></i> PDF </h3>
+    </a>
+    <br>
+    <a href="{{j.chfiles.url}}" target="_blank"><img src="{{ j.chfiles.url }}" alt="image" class="img-fluid" style='width:200px; height:200px; '></a>
+      <br>
+      <video width="320" height="240" controls class="mt-4">
+        <source src="{{j.chfiles.url}}" type="video/mp4">
+        <source src="{{j.chfiles.url}}" type="video/mkv">
+        Your browser does not support the video tag.
+      </video>
+  
+
+     
+
+  </div>
+
+  
+  {% endif %}
+  
+  {% endfor %}
+  
+  {% endif %}
+
+</div>
+
+<div class="container mt-4">
+  <a href="{% url 'deletechapter' id=i.slug book=subjectslug %}" class="btn btn-danger">Delete Chapter</a>
+<a href="{% url 'addcontent'  id=i.slug book=subjectslug %}" class="btn btn-success">Add Content </a>
+</div>
+{% endfor %}
+
+{% else %}
+
+<h3 class="text-center">No Content Available</h3>
+
+{% endif %}
+
+
+      
+        {% endif %}
+       
+    </div>
+    
+    <script>
+    function myFunction() {
+      var input, filter, ul, li, a, i;
+      input = document.getElementById("mySearch");
+      filter = input.value.toUpperCase();
+      ul = document.getElementById("myMenu");
+      li = ul.getElementsByTagName("li");
+      for (i = 0; i < li.length; i++) {
+        a = li[i].getElementsByTagName("a")[0];
+        if (a.innerHTML.toUpperCase().indexOf(filter) > -1) {
+          li[i].style.display = "";
+        } else {
+          li[i].style.display = "none";
+        }
+      }
+    }
+    </script>
+   
+   {% endfor %}
+
+   {% else %}
+   <h3 class="text-center">Something went wrong !!!</h3>
+
+   {% endif %}
+        
+        
+
+
+</div>
+
+{% endblock content %}
