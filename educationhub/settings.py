@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-r4mat=d5g3y5u3em38js!2!rq&s&w$6nuetfov=v+@6^o#d$ho
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = [' eplatfrom.pythonanywhere.com']
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
