@@ -60,7 +60,7 @@ ROOT_URLCONF = 'educationhub.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ['templates'],
+        'DIRS': [r'E:\Django_project\Phitron_Final_Exam\online e-learning platfrom\E-learning platfrom\educationhub\templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
